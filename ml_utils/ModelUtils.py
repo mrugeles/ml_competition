@@ -61,6 +61,7 @@ class ModelUtils():
         return model
 
     def compile_fit(self, model, model_path, x_train, y_train, x_val, y_val):
+        print(f'compile_fit')
         model.compile(loss='categorical_crossentropy',
               optimizer='rmsprop',
               metrics=['acc'])

@@ -13,7 +13,7 @@ class DataUtils():
     VALIDATION_SPLIT = 0.2
 
     def get_data(self, df, label_quality, lang):
-        return df[(df['language'] == lang) and (df['label_quality'] == label_quality)]
+        return df[(df['language'] == lang) & (df['label_quality'] == label_quality)]
     
     def filter_reliable_categories(self, df):
         feature = df['category'].value_counts().to_frame(name = 'counts')
