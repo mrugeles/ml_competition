@@ -17,7 +17,7 @@ class DataUtils():
     
     def filter_reliable_categories(self, df):
         feature = df['category'].value_counts().to_frame(name = 'counts')
-        reliable_categories = list(set(feature[feature['counts'] >= 0].index.values))
+        reliable_categories = list(set(feature[feature['counts'] >= 50].index.values))
         df = df[df['category'].isin(reliable_categories)]
 
         return df
