@@ -17,7 +17,7 @@ class DataUtils():
     
     def filter_reliable_categories(self, df):
         feature = df['category'].value_counts().to_frame(name = 'counts')
-        reliable_categories = list(set(feature[feature['counts'] >= 50].index.values))
+        reliable_categories = list(set(feature[feature['counts'] >= 0].index.values))
         df = df[df['category'].isin(reliable_categories)]
 
         return df
@@ -29,7 +29,6 @@ class DataUtils():
         
         texts = list(df['title'].values)
         labels = list(df['category_code'].values)
-
         tokenizer = Tokenizer(num_words=self.MAX_NUM_WORDS)
         tokenizer.fit_on_texts(texts)
         sequences = tokenizer.texts_to_sequences(texts)
