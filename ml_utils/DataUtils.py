@@ -6,7 +6,7 @@ from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from keras.utils import to_categorical
 
-class Data():
+class DataUtils():
 
     MAX_NUM_WORDS = 20000
     MAX_SEQUENCE_LENGTH = 1000
@@ -22,7 +22,7 @@ class Data():
 
         return df
     
-    def get_training_dataset(self, df):
+    def encode_dataset(self, df):
         le = preprocessing.LabelEncoder()
         le.fit(df['category'])
         df['category_code'] = le.transform(df['category']) 
@@ -38,7 +38,7 @@ class Data():
         labels = to_categorical(np.asarray(labels))
 
 
-        return data, labels
+        return data, labels, tokenizer.word_index
 
     def split_dataset(self, data, labels):
         indices = np.arange(data.shape[0])
@@ -54,3 +54,12 @@ class Data():
 
         return x_train, y_train, x_val, y_val
 
+    def get_training_dataset(self, dataset, label_quality, lang):
+        dataset = self.get_data(dataset, label_quality, lang)
+        dataset = self.filter_reliable_categories(dataset)
+
+        data, labels, word_index = self.encode_dataset(dataset)
+
+
+
+        return self.split_dataset(data, labels), word_index
