@@ -22,7 +22,7 @@ class DataUtils():
 
         return df
     
-    def encode_dataset(self, df):
+    def encode_dataset(self, df, max_sequence_length):
         le = preprocessing.LabelEncoder()
         le.fit(df['category'])
         df['category_code'] = le.transform(df['category']) 
@@ -33,7 +33,7 @@ class DataUtils():
         tokenizer.fit_on_texts(texts)
         sequences = tokenizer.texts_to_sequences(texts)
 
-        data = pad_sequences(sequences, maxlen=self.MAX_SEQUENCE_LENGTH)
+        data = pad_sequences(sequences, maxlen=max_sequence_length)
         labels = to_categorical(np.asarray(labels))
 
 

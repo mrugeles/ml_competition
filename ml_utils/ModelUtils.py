@@ -35,14 +35,14 @@ class ModelUtils():
                 embedding_matrix[i] = embedding_vector
         return embedding_matrix
 
-    def create_model(self, word_index, embedding_matrix, categories_size):
+    def create_model(self, word_index, embedding_matrix, categories_size, max_sequence_length):
         embedding_layer = Embedding(len(word_index) + 1,
                             self.EMBEDDING_DIM,
                             weights=[embedding_matrix],
-                            input_length=self.MAX_SEQUENCE_LENGTH,
+                            input_length=max_sequence_length,
                             trainable=False)
 
-        sequence_input = Input(shape=(self.MAX_SEQUENCE_LENGTH,), dtype='int32')
+        sequence_input = Input(shape=(max_sequence_length,), dtype='int32')
         embedded_sequences = embedding_layer(sequence_input)
 
         x = Conv1D(128, 5, kernel_initializer='glorot_normal', activation='relu')(embedded_sequences)
@@ -75,7 +75,7 @@ class ModelUtils():
                 validation_data=(x_val, y_val),
                 callbacks=[checkpointer])
 
-    def train(self, x_train, y_train, x_val, y_val, word_index, embedding_path, model_path) :
+    def train(self, x_train, y_train, x_val, y_val, word_index, embedding_path, model_path, max_sequence_length) :
         embedding_matrix = self.create_embedding_matrix(word_index, embedding_path)
-        model = self.create_model(word_index, embedding_matrix, len(y_train[1]))
+        model = self.create_model(word_index, embedding_matrix, len(y_train[1]), max_sequence_length)
         self.compile_fit(model, model_path, x_train, y_train, x_val, y_val)
