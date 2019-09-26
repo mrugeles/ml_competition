@@ -10,7 +10,6 @@ from keras.callbacks import ModelCheckpoint
 class ModelUtils():
 
     EMBEDDING_DIM = 100
-    MAX_SEQUENCE_LENGTH = 1000
 
     def create_embedding_index(self, embedding_path):
         embeddings_index = {}

@@ -9,7 +9,6 @@ from keras.utils import to_categorical
 class DataUtils():
 
     MAX_NUM_WORDS = 20000
-    MAX_SEQUENCE_LENGTH = 1000
     VALIDATION_SPLIT = 0.2
 
     def get_data(self, df, label_quality, lang):
