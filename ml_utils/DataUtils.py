@@ -20,16 +20,20 @@ class DataUtils():
         df = df[df['category'].isin(reliable_categories)]
 
         return df
+
+    def get_tokenizer(self, texts):
+        texts = list(texts)
+        tokenizer = Tokenizer(num_words=self.MAX_NUM_WORDS)
+        tokenizer.fit_on_texts(texts)
+        return tokenizer
+
     
     def encode_features(self, features, max_sequence_length):
         texts = list(features.values)
-        tokenizer = Tokenizer(num_words=self.MAX_NUM_WORDS)
-        tokenizer.fit_on_texts(texts)
+        tokenizer = self.get_tokenizer(texts)
         sequences = tokenizer.texts_to_sequences(texts)
-
-        data = pad_sequences(sequences, maxlen=max_sequence_length)
-        
-        return data, tokenizer.word_index
+        data = pad_sequences(sequences, maxlen=max_sequence_length)        
+        return data
 
     def encode_labels(self, labels):
         le = preprocessing.LabelEncoder()
