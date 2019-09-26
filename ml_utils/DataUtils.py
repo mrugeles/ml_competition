@@ -21,22 +21,28 @@ class DataUtils():
 
         return df
     
-    def encode_dataset(self, df, max_sequence_length):
-        le = preprocessing.LabelEncoder()
-        le.fit(df['category'])
-        df['category_code'] = le.transform(df['category']) 
-        
-        texts = list(df['title'].values)
-        labels = list(df['category_code'].values)
+    def encode_features(self, features, max_sequence_length):
+        texts = list(features.values)
         tokenizer = Tokenizer(num_words=self.MAX_NUM_WORDS)
         tokenizer.fit_on_texts(texts)
         sequences = tokenizer.texts_to_sequences(texts)
 
         data = pad_sequences(sequences, maxlen=max_sequence_length)
+        
+        return data, tokenizer.word_index
+
+    def encode_labels(self, labels):
+        le = preprocessing.LabelEncoder()
+        le.fit(labels['category'])
+        labels['category_code'] = le.transform(labels['category']) 
+        labels = list(labels['category_code'].values)
         labels = to_categorical(np.asarray(labels))
+        return labels
 
-
-        return data, labels, tokenizer.word_index
+    def encode_dataset(self, df, max_sequence_length):
+        data, word_index = self.encode_features(df['title'], max_sequence_length)
+        labels = self.encode_features(df[['labels']])
+        return data, labels, word_index
 
     def split_dataset(self, data, labels):
         indices = np.arange(data.shape[0])
