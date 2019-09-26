@@ -41,7 +41,7 @@ class DataUtils():
 
     def encode_dataset(self, df, max_sequence_length):
         data, word_index = self.encode_features(df['title'], max_sequence_length)
-        labels = self.encode_features(df[['labels']])
+        labels = self.encode_labels(df[['labels']])
         return data, labels, word_index
 
     def split_dataset(self, data, labels):
