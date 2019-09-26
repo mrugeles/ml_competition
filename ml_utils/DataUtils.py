@@ -52,11 +52,11 @@ class DataUtils():
 
         return x_train, y_train, x_val, y_val
 
-    def get_training_dataset(self, dataset, label_quality, lang):
+    def get_training_dataset(self, dataset, label_quality, lang, max_sequence_length):
         dataset = self.get_data(dataset, label_quality, lang)
         dataset = self.filter_reliable_categories(dataset)
 
-        data, labels, word_index = self.encode_dataset(dataset)
+        data, labels, word_index = self.encode_dataset(dataset, max_sequence_length)
 
 
 
