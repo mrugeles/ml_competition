@@ -39,9 +39,9 @@ class DataUtils():
         le = preprocessing.LabelEncoder()
         le.fit(labels['category'])
         labels['category_code'] = le.transform(labels['category']) 
-        labels = list(labels['category_code'].values)
-        labels = to_categorical(np.asarray(labels))
-        return labels
+        label_codes= list(labels['category_code'].values)
+        labels = to_categorical(np.asarray(label_codes))
+        return labels, label_codes
 
     def encode_dataset(self, df, max_sequence_length):
         data, word_index = self.encode_features(df['title'], max_sequence_length)
